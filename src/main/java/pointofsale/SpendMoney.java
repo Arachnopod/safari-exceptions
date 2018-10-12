@@ -15,20 +15,19 @@ public class SpendMoney {
   public void buy() {
     try {
       authorizePayement("1234567812345678", 50);
-    } catch (BaudRateException e) {
-      // configuration/protocol problem;
-    } catch (CommsException e) {
-      // io, retry
-    } catch (HWException e) {
-      // stuff broke, get new equipment
+    } catch (PoliceException e) {
+      e.printStackTrace();
+    } catch (InfrastructureException e) {
+      e.printStackTrace();
+    } catch (NoMoneyException e) {
+      e.printStackTrace();
     }
   }
 
   private static boolean USE_MODEM = true;
 
   public int authorizePayement(String ccNum, int amount)
-      throws BaudRateException, CommsException, HWException,
-      IOException, UnknownHostException {
+      throws PoliceException, NoMoneyException, InfrastructureException {
     Modem modem = new Modem();
     int triesRemaining = 3;
     boolean success = false;
@@ -39,11 +38,15 @@ public class SpendMoney {
         } else {
           Socket s = new Socket("192.168.0.1", 8080);
         }
+
+        // perform transaction
+        // if (not enough money)
+          // throw new NoMoneyException()
         success = true;
         // do other things here
-      } catch (BaudRateException | CommsException | HWException ex) {
+      } catch (HWException | IOException ex) {
         if (--triesRemaining == 0) {
-          throw ex;
+          throw new InfrastructureException("Wiggle the plugs?", ex);
         }
 //      } catch (BaudRateException ex) {
 //        if(--triesRemaining == 0) {
