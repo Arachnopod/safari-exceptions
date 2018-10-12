@@ -41,7 +41,7 @@ public class SpendMoney {
 
         // perform transaction
         // if (not enough money)
-          // throw new NoMoneyException()
+        // throw new NoMoneyException()
         success = true;
         // do other things here
       } catch (HWException | IOException ex) {
@@ -62,6 +62,7 @@ public class SpendMoney {
 //        }
 //      }
       }
-      return amount;
     }
+    return amount;
   }
+}
